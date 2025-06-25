@@ -1,0 +1,48 @@
+<div class="container py-5">
+<h2 class="mb-4">Submission Report</h2>
+
+<% if @report[:lineitem].present? %>
+  <div class="mb-3">
+    <strong>Assignment:</strong> <%= @report[:lineitem][:label] %><br>
+    <strong>Score Maximum:</strong> <%= @report[:lineitem][:scoreMaximum] %>
+  </div>
+<% end %>
+
+<table class="table table-bordered table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>Id</th>
+      <th>Username</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Submitted</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @report[:submissions].each do |submission| %>
+      <tr>
+        <td><%= submission[:id] %></td>
+        <td><%= submission[:username] %></td>
+        <td><%= submission[:name] %></td>
+        <td><%= submission[:email] || "-" %></td>
+        <td>
+          <% if submission[:submitted] %>
+            <span class="badge bg-success">Yes</span>
+          <% else %>
+            <span class="badge bg-secondary">No</span>
+          <% end %>
+        </td>
+        <td>
+          <% if submission[:score] %>
+            <%= number_with_precision(submission[:score], precision: 2) %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+</div>

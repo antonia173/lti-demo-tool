@@ -1,0 +1,44 @@
+<%= form_with url: lti_deep_linking_response_path, method: :post, class: "container-fluid" do %>
+  <%= hidden_field_tag :state, @state %>
+
+  <h2 class="mb-4">Select items to add to course</h2>
+
+  <div class="form-check form-switch mb-3">
+    <%= check_box_tag :add_assignment, "1", false, class: "form-check-input", id: "add_assignment" %>
+    <%= label_tag :add_assignment, "Asteroid game assignment", class: "form-check-label" %>
+  </div>
+
+  <div class="mb-3 ms-3">
+    <label class="form-label d-block">Select game level:</label>
+    <div class="btn-group" role="group" aria-label="Game level selection">
+      <%= radio_button_tag :level, "easy", true, class: "btn-check", id: "level_easy", autocomplete: "off", disabled: true %>
+      <%= label_tag :level_easy, "Easy", class: "btn btn-outline-primary" %>
+
+      <%= radio_button_tag :level, "hard", false, class: "btn-check", id: "level_hard", autocomplete: "off", disabled: true %>
+      <%= label_tag :level_hard, "Hard", class: "btn btn-outline-primary" %>
+    </div>
+  </div>
+
+  <div class="form-check form-switch mb-4">
+    <%= check_box_tag :add_practice, "1", false, class: "form-check-input", id: "add_practice" %>
+    <%= label_tag :add_practice, "Asteroid game practice", class: "form-check-label" %>
+  </div>
+
+  <div class="form-check form-switch mb-4">
+    <%= check_box_tag :add_help, "1", false, class: "form-check-input", id: "add_help" %>
+    <%= label_tag :add_help, "Help Page", class: "form-check-label" %>
+  </div>
+
+  <%= submit_tag "Submit", class: "btn btn-primary" %>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const gameCheckbox = document.getElementById("add_assignment");
+    const levelRadios = document.querySelectorAll("input[name='level']");
+
+    gameCheckbox.addEventListener("change", () => {
+      levelRadios.forEach(radio => radio.disabled = !gameCheckbox.checked);
+    });
+  });
+</script>

@@ -1,0 +1,19 @@
+<%= javascript_tag do %>
+  window.GAME_CONFIG = {
+    name: "<%= j name %>",
+    level: "<%= j level %>",
+  };
+<% end %>
+
+<style>
+  html, body { margin: 0; overflow: hidden; }
+
+  canvas {
+    box-sizing: border-box;
+    border: 2px solid #fff;
+    background-color: #000;
+    width: 100vw;
+    height: 100vh;
+  }
+
+</style>

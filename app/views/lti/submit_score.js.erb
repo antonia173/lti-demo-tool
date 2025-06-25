@@ -1,0 +1,14 @@
+console.log("submit_score.js.erb loaded");
+
+var button = document.getElementById("submit-score-button");
+if (button) {
+  console.log("Found button:", button);
+  button.disabled = true;
+  button.classList.remove("btn-outline-success");
+  button.classList.add("btn-secondary");
+  button.value = "Score submitted!";
+  button.removeAttribute("data-disable-with");
+  console.log("Button styled:", button);
+} else {
+  console.warn("submit-score-button not found!");
+}

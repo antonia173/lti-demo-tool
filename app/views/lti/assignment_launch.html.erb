@@ -1,0 +1,8 @@
+<div id="score-controls">
+  <%= form_with url: lti_submit_score_path, method: :post, id: "score-form", data: { remote: true, turbo: false} do |f| %>
+    <%= hidden_field_tag :state, @state %>
+    <%= hidden_field_tag :score, "", id: "score-input" %>
+    <%= submit_tag "Submit score", id: "submit-score-button", class: "btn btn-outline-success" %>
+  <% end %>
+</div>
+<%= render 'lti/play', name: @name, level: @level %>
