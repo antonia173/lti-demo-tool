@@ -1,3 +1,5 @@
+<%= javascript_importmap_tags %>
+
 <div id="score-controls">
   <%= form_with url: lti_submit_score_path, method: :post, id: "score-form", data: { remote: true, turbo: false} do |f| %>
     <%= hidden_field_tag :state, @state %>

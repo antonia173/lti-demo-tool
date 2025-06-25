@@ -1,5 +1,5 @@
-const username = window.GAME_CONFIG?.name;
-const level = window.GAME_CONFIG?.level;
+const username = window.GAME_CONFIG?.name || 'player';
+const level = window.GAME_CONFIG?.level || 'normal';
 
 const gameSettings = {
     easy: { asteroids: 5, speedMultiplier: 1 },
