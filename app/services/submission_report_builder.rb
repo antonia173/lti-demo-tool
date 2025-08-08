@@ -50,8 +50,7 @@ class SubmissionReportBuilder
 
   def fetch_results(lineitem)
     platform = Platform.find_by(issuer: @data.issuer, client_id: @data.audience)
-    token = LtiBridge::AccessToken.fetch(issuer: platform.issuer, 
-                                            client_id: platform.client_id, 
+    token = LtiBridge::AccessToken.fetch(client_id: platform.client_id, 
                                             token_url: platform.token_url,
                                             scope: @data.ags_scope)
     ags = LtiBridge::AGS.new(access_token: token)
