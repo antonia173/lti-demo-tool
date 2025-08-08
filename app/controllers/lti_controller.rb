@@ -107,8 +107,7 @@ class LtiController < ApplicationController
     )
 
     platform = Platform.find_by(issuer: data.issuer, client_id: data.audience)
-    ags_token = LtiBridge::AccessToken.fetch(issuer: platform.issuer, 
-                                            client_id: platform.client_id, 
+    ags_token = LtiBridge::AccessToken.fetch(client_id: platform.client_id, 
                                             token_url: platform.token_url,
                                             scope: data.ags_scope)
 
@@ -155,7 +154,7 @@ class LtiController < ApplicationController
       jwks_url: result[:platform][:jwks_url]
     )
 
-    @client_id = result[:response][:client_id]
+    render html: LtiBridge::DynamicRegistration.html_page.html_safe, content_type: 'text/html', layout: false
   rescue => e
     render json: { error: e.message }, status: :unprocessable_entity
   end

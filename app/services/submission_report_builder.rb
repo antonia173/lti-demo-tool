@@ -29,20 +29,18 @@ class SubmissionReportBuilder
 
   def fetch_members
     platform = Platform.find_by(issuer: @data.issuer, client_id: @data.audience)
-    token = LtiBridge::AccessToken.fetch(issuer: platform.issuer, 
-                                            client_id: platform.client_id, 
-                                            token_url: platform.token_url,
-                                            scope: @data.nrps_scope)
+    token = LtiBridge::AccessToken.fetch(client_id: platform.client_id, 
+                                         token_url: platform.token_url,
+                                         scope: @data.nrps_scope)
     nrps = LtiBridge::NRPS.new(access_token: token, memberships_url: @data.nrps_context_memberships_url)
     nrps.members(query: { role: "Learner" })
   end
 
   def find_lineitem
     platform = Platform.find_by(issuer: @data.issuer, client_id: @data.audience)
-    token = LtiBridge::AccessToken.fetch(issuer: platform.issuer, 
-                                            client_id: platform.client_id, 
-                                            token_url: platform.token_url,
-                                            scope: @data.ags_scope)
+    token = LtiBridge::AccessToken.fetch(client_id: platform.client_id, 
+                                         token_url: platform.token_url,
+                                         scope: @data.ags_scope)
     LtiBridge::LineItem.find_by(
       access_token: token,
       lineitems_url: @data.ags_lineitems,
