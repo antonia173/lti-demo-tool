@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/antonia173/lti-bridge.git
-  revision: 701adfc842eae8001295877de7647649469087ac
+  revision: 3f8b3037e126a275671c3fa7a6a9905f0397d9c1
   specs:
     lti-bridge (0.1.0)
       httparty (~> 0.18)
