@@ -14,6 +14,5 @@ Rails.application.routes.draw do
 
   post '/lti/submit_score', to: 'lti#submit_score'
 
-  get '/.well-known/openid-configuration', to: 'lti#tool_configuration'
   get '/register', to: 'lti#register', as: 'register'
 end

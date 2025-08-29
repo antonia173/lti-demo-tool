@@ -94,9 +94,21 @@ class LtiController < ApplicationController
     score = params[:score].to_f
 
     data = Rails.cache.read("launch_#{state}")
-    if data.nil?
-      render plain: "Invalid or expired launch state", status: :bad_request and return
-    end
+    return render plain: "Invalid or expired launch state", status: :bad_request if data.nil?
+
+    platform = Platform.find_by(issuer: data.issuer, client_id: data.audience)
+    ags_token = LtiBridge::AccessToken.fetch(client_id: platform.client_id, 
+                                            token_url: platform.token_url,
+                                            scope: data.ags_scope)
+    ags = LtiBridge::AGS.new(access_token: ags_token)          
+    
+    line_item = ags.find_or_create_line_item(
+      lineitems_url:   data.ags_lineitems,
+      label:           data.resource_link["title"],
+      score_maximum:   1.0,
+      resource_link_id:data.resource_link["id"],
+      tag:             "grade"
+    )
 
     score_data = LtiBridge::Score.new(
         user_id: data.user_id,
@@ -106,22 +118,7 @@ class LtiController < ApplicationController
         score_maximum: 1.0
     )
 
-    platform = Platform.find_by(issuer: data.issuer, client_id: data.audience)
-    ags_token = LtiBridge::AccessToken.fetch(client_id: platform.client_id, 
-                                            token_url: platform.token_url,
-                                            scope: data.ags_scope)
-
-    lineitem = LtiBridge::LineItem.find_or_create_by(
-        access_token: ags_token,
-        lineitems_url: data.ags_lineitems,
-        label: data.resource_link["title"],
-        score_maximum: 1.0,
-        resource_link_id: data.resource_link["id"],
-        tag: "grade"
-    )
-  
-    ags = LtiBridge::AGS.new(access_token: ags_token)
-    ags.submit_score(score: score_data, lineitem: lineitem)
+    ags.submit_score(score: score_data, lineitem_id: line_item.id)
 
     respond_to do |format|
       format.js 
@@ -134,9 +131,6 @@ class LtiController < ApplicationController
     render json: { keys: [jwk] }
   end
 
-  def tool_configuration
-    render json: tool_config_builder.build
-  end
 
   def register
     result = LtiBridge::DynamicRegistration.handle(
